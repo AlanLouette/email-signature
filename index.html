@@ -1,0 +1,424 @@
+<html lang="">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            margin: 0;
+            background-color: #002c5a;
+            min-height: 100vh;
+        }
+
+        header,
+        #generator,
+        #tutorial {
+            font-family: "Open Sans", "IBM Plex Sans", Arial, sans-serif;
+        }
+
+        header {
+            background-color: #002c5a;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            min-height: 10vh;
+        }
+
+        header .row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        header h1 {
+            color: #ffffff;
+            font-size: 1.5rem;
+        }
+
+        .logo {
+            max-height: 120px;
+        }
+
+        #generator {
+            margin-bottom: 150px;
+        }
+
+        #mainarea,
+        #tutorial {
+            background-color: #ffffff;
+        }
+
+        @media screen and (min-width:981px) {
+
+            #mainarea {
+                display: flex;
+                justify-content: space-around;
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+                max-width: 1400px;
+                min-height: 65vh;
+            }
+
+            #tutorial {
+                margin-top: 45px;
+                padding-top: 22px;
+                padding-bottom: 45px;
+                display: flex;
+                justify-content: space-around;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                max-width: 1400px;
+                min-height: 65vh;
+            }
+
+            #generator {
+                margin-bottom: 0px;
+            }
+        }
+
+        @media screen and (max-width:980px) {
+            #mainarea {
+                padding: 30px;
+            }
+        }
+
+        #generator p {
+            text-align: center;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-width: 500px;
+        }
+
+        span.inputfield {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        #generator input[type="text"],
+        #generator input[type="email"] {
+            background-color: #f7f7f7;
+            border: 0px solid #303030;
+            padding: 0.5rem 2ch;
+            font-size: 1rem;
+            min-width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #002c5a;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        #generator input[type="submit"],
+        button {
+            display: block;
+            margin-left: auto;
+            background-color: #5d9333;
+            border-width: 0px !important;
+            border-color: rgba(255, 255, 255, 0);
+            font-size: 20px;
+            font-weight: 500;
+            padding: .3em 1em;
+            line-height: 1.7em !important;
+            color: #ffffff;
+            background-size: cover;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            border: 2px solid;
+            border-radius: 3px;
+            -webkit-transition-duration: .2s;
+            transition-duration: .2s;
+            -webkit-transition-property: all !important;
+            transition-property: all !important;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        button {
+            margin-left: 0;
+            margin-bottom: 10px;
+        }
+
+        #generator input[type="submit"]:hover,
+        button:hover {
+            color: #ffffff !important;
+            background-color: #002c5a;
+            border-radius: 0px;
+            cursor: pointer;
+        }
+
+        #generator label {
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        footer {
+            background-color: #002c5a;
+            min-height: 10vh;
+            width: 100%;
+        }
+
+        #copyMessage {
+            color: #5d9333;
+            font-family: "Segoe UI", "Open Sans", "IBM Plex Sans", "Arial", sans-serif;
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="clickup-chrome-ext_installed">
+    <header>
+        <div class="row">
+            <img class="logo" src="https://4bs.com/emailsignature/4BS-logo.png">
+            <h1>4BS Email Signature Generator</h1>
+        </div>
+    </header>
+    <div id="mainarea">
+        <div id="generator">
+            <div class="row">
+                <p>Gebruik de invoervelden hieronder en klik op 'genereren' om je e-mailhandtekening aan te maken.</p>
+                <p>
+                    Klik daarna op "Kopiëren" en ga naar Outlook. Open daar een nieuwe e-mail, klik op "Handtekeningen" en plak daar de inhoud. <br>Stel daarna je nieuwe e-mailhandtekening in als signature voor nieuwe mails & replies.</p>
+                <div>
+                    <span class="inputfield">
+                        <label for="i_fn">Voornaam:</label>
+                        <input id="i_fn" name="fn" type="text">
+                    </span>
+                    <span class="inputfield">
+                        <label for="i_ln">Naam:</label>
+                        <input id="i_lname" name="ln" type="text">
+                    </span>
+                    <span class="inputfield">
+                        <label for="i_ln">Functie:</label>
+                        <input id="i_function" name="function" type="text">
+                    </span>
+
+                    <span class="inputfield">
+                        <label for="i_mobile">Mobiel:</label>
+                        <input id="i_mobile" name="mobile" type="text">
+                    </span>
+                    <span class="inputfield">
+                        <label for="i_fn">E-mailadres:</label>
+                        <input id="i_email" name="email" type="email">
+                    </span>
+
+                    <input id="generate" type="submit" value="Genereren">
+                </div>
+            </div>
+        </div>
+
+        <div id="form-area">
+            <div id="form">
+                <p style="font-size: 14px; font-family: 'Segoe UI', 'Open Sans', 'IBM Plex Sans', Arial, Helvetica, sans-serif;color:002c5a;">
+                    Met vriendelijke groeten,<br>
+                    Cordialement,<br>
+                    Best regards,<br>
+                </p>
+                <table cellpadding="0" cellspacing="0" class="sc-gPEVay eQYmiW" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: 'Segoe UI', 'Open Sans', 'IBM Plex Sans', Arial, Helvetica, sans-serif;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table class="signature" cellpadding="0" cellspacing="0" class="sc-gPEVay eQYmiW" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: 'Segoe UI', 'IBM Plex Sans', Arial, sans-serif;">
+                                    <tbody>
+                                        <tr>
+                                            <td width="100" style="vertical-align: middle;"><span class="sc-kgAjT cuzzPp" style="margin-right: 20px; display: block;"><img src="https://4bs.com/emailsignature/4BS-logo.png" role="presentation" width="85" class="sc-cHGsZl bHiaRe" style="max-width: 100px;"></span></td>
+                                            <td style="vertical-align: middle;">
+                                                <h3 id="nameLine" color="#002c5a" class="sc-fBuWsC eeihxG" style="margin: 0px; font-size: 14px; color: #002c5a;"><span color="#002c5a" class="sc-fBuWsC eeihxG" style="margin: 0px; font-size: 14px; color: #002c5a;" id="fname">Voornaam</span><span id="nameSpacer">&nbsp;</span><span id="lname" color="#002c5a" class="sc-fBuWsC eeihxG" style="margin: 0px; font-size: 14px; color: #002c5a;">Achternaam</span></h3>
+                                                <p id="functionLine" color="#002c5a" font-size="medium" class="sc-fMiknA bxZCMx" style="margin: 0px; color: #002c5a; font-size: 14px; line-height: 22px;"><span id="function">Functie</span></p>
+                                                <p color="#002c5a" font-size="medium" class="sc-dVhcbM fghLuF" style="margin: 0px; font-weight: 500; color: #002c5a; font-size: 14px; line-height: 22px;"><span><br>4 Business Software NV<br>Nijverheidsstraat 37<br>2570 Duffel</span></p>
+                                            </td>
+                                            <td width="30">
+                                                <div style="width: 30px;"></div>
+                                            </td>
+                                            <td color="#002c5a" direction="vertical" width="1" class="sc-jhAzac hmXDXQ" style="width: 1px; border-bottom: none; border-left: 1px solid #002c5a;"></td>
+                                            <td width="30">
+                                                <div style="width: 30px;"></div>
+                                            </td>
+                                            <td style="vertical-align: middle;">
+                                                <table cellpadding="0" cellspacing="0" class="sc-gPEVay eQYmiW" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: 'Segoe UI', 'IBM Plex Sans', Arial, sans-serif;">
+                                                    <tbody id="contact_details">
+                                                        <tr height="25" style="vertical-align: middle;">
+                                                            <td width="30" style="vertical-align: middle;">
+                                                                <table cellpadding="0" cellspacing="0" class="sc-gPEVay eQYmiW" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: 'Segoe UI', 'Open Sans', 'IBM Plex Sans', Arial, Helvetica, sans-serif;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td style="vertical-align: bottom;"><span color="#002c5a" width="11" class="sc-jlyJG bbyJzT" style="display: block;"><img src="https://4bs.com/emailsignature/phone.png" color="#002c5a" width="13" class="sc-iRbamj blSEcj" style="display: block;"></span></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td style="padding: 0px;"><a href="tel:+3234911700" color="#002c5a" class="sc-gipzik iyhjGb" style="text-decoration: none; color: #002c5a; font-size: 12px;"><span>+32 3 491 17 00</span></a></td>
+                                                        </tr>
+                                                        <tr height="25" style="vertical-align: middle;">
+                                                            <td width="30" style="vertical-align: middle;">
+                                                                <table cellpadding="0" cellspacing="0" class="sc-gPEVay eQYmiW" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: 'Segoe UI', 'Open Sans', 'IBM Plex Sans', Arial, Helvetica, sans-serif;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td style="vertical-align: bottom;"><span color="#002c5a" width="11" class="sc-jlyJG bbyJzT" style="display: block;"><img src="https://4bs.com/emailsignature/link.png" color="#002c5a" width="13" class="sc-iRbamj blSEcj" style="display: block;"></span></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td style="padding: 0px;"><a href="https://4bs.com/" color="#002c5a" class="sc-gipzik iyhjGb" style="text-decoration: none; color: #002c5a; font-size: 12px;"><span>4bs.com</span></a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="40" style="font-size: 40px; line-height: 40px;">&nbsp;</td>
+                        </tr>
+                        <tr id="hideInAutotask">
+                            <td>
+                                <table cellpadding="0" cellspacing="0" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: 'Segoe UI', 'IBM Plex Sans', Arial, sans-serif; width: 100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="vertical-align: top; width: 100px; height: 75px;">
+                                                <a href="https://4bs.com/m-mercaflux" target="_blank">
+                                                    <img src="https://4bs.com/emailsignature/logo1.png" width="100" height="75" style="border: none; display: block;">
+                                                </a>
+                                            </td>
+                                            <td style="vertical-align: top; width: 100px; height: 75px;">
+                                                <a href="https://4bs.com/m-exact" target="_blank">
+                                                    <img src="https://4bs.com/emailsignature/logo2.png" width="100" height="75" style="border: none; display: block;">
+                                                </a>
+                                            </td>
+                                            <td style="vertical-align: top; width: 100px; height: 75px;">
+                                                <a href="https://4bs.com/m-winbooks" target="_blank">
+                                                    <img src="https://4bs.com/emailsignature/logo3.png" width="100" height="75" style="border: none; display: block;">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="vertical-align: top; width: 100px; height: 45px;">
+                                                <a href="https://4bs.com/m-clearfacts" target="_blank">
+                                                    <img src="https://4bs.com/emailsignature/logo4.png" width="100" height="45" style="border: none; display: block;">
+                                                </a>
+                                            </td>
+                                            <td style="vertical-align: top; width: 100px; height: 45px;">
+                                                <a href="https://4bs.com/m-microsoft" target="_blank">
+                                                    <img src="https://4bs.com/emailsignature/logo5.png" width="100" height="45" style="border: none; display: block;">
+                                                </a>
+                                            </td>
+                                            <td style="vertical-align: top; width: 100px; height: 45px;">
+                                                <a href="https://4bs.com/m-securedevice" target="_blank">
+                                                    <img src="https://4bs.com/emailsignature/logo6.png" width="100" height="45" style="border: none; display: block;">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button style="margin-top:50px;" id="copySignature">Kopiëren</button>
+            <div style="margin-bottom:30px" id="copyMessage">Handtekeningcode is naar het klembord gekopieerd!</div>
+        </div>
+    </div>
+    <div id="tutorial">
+        <h2>Hoe stel ik mijn e-mailhandtekening in Outlook in?</h2>
+        <iframe src="https://player.vimeo.com/video/1004478185?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="1280" height="720" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" title="4BS - Hoe stel ik mijn e-mailhandtekening in"></iframe>
+    </div>
+
+    <footer>
+    </footer>
+
+    <script>
+        Element.prototype.remove = function() {
+            this.parentElement.removeChild(this);
+        };
+
+        NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+            for (var i = this.length - 1; i >= 0; i--) {
+                if (this[i] && this[i].parentElement) {
+                    this[i].parentElement.removeChild(this[i]);
+                }
+            }
+        };
+
+        function sanitizeText(value) {
+            return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        document.getElementById('generate').addEventListener('click', function() {
+            if (document.getElementById('tr_mobile') !== null) {
+                document.getElementById('tr_mobile').remove();
+            }
+            if (document.getElementById('tr_email') !== null) {
+                document.getElementById('tr_email').remove();
+            }
+
+            var fname = document.querySelector('[name="fn"]').value.trim();
+            var lname = document.querySelector('[name="ln"]').value.trim();
+            var role = document.querySelector('[name="function"]').value.trim();
+            var mobile = document.querySelector('[name="mobile"]').value.trim();
+            var mobileHref = mobile.replace('(0)', '');
+            var email = document.querySelector('[name="email"]').value.trim();
+
+            document.getElementById("fname").textContent = fname;
+            document.getElementById("lname").textContent = lname;
+            document.getElementById("nameSpacer").textContent = fname && lname ? " " : "";
+            document.getElementById("nameLine").style.display = fname || lname ? "" : "none";
+
+            document.getElementById("function").textContent = role;
+            document.getElementById("functionLine").style.display = role ? "" : "none";
+
+            var trMobile = '<tr height="25" style="vertical-align: middle;" id="tr_mobile"><td width="30" style="vertical-align: middle;"><table cellpadding="0" cellspacing="0" class="sc-gPEVay eQYmiW" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Segoe UI&quot;, &quot;IBM Plex Sans&quot;, Arial, sans-serif;"><tbody><tr><td style="vertical-align: bottom;"><span color="#002c5a" width="11" class="sc-jlyJG bbyJzT" style="display: block;"><img src="https://www.4bs.com/emailsignature/smartphone.png" color="#002c5a" width="13" class="sc-iRbamj blSEcj" style="display: block;"></span></td></tr></tbody></table></td><td style="padding: 0px; color: #002c5a;"><a href="tel:' + sanitizeText(mobileHref) + '" color="#002c5a" class="sc-gipzik iyhjGb" style="text-decoration: none; color: #002c5a; font-size: 12px;"><span>' + sanitizeText(mobile) + '</span></a></td></tr>';
+
+            var trEmail = '<tr height="25" style="vertical-align: middle;" id="tr_email"><td width="30" style="vertical-align: middle;"><table cellpadding="0" cellspacing="0" class="sc-gPEVay eQYmiW" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Segoe UI&quot;, &quot;IBM Plex Sans&quot;, Arial, sans-serif;"><tbody><tr><td style="vertical-align: bottom;"><span color="#002c5a" width="11" class="sc-jlyJG bbyJzT" style="display: block;"><img src="https://www.4bs.com/emailsignature/mail.png" color="#002c5a" width="13" class="sc-iRbamj blSEcj" style="display: block;"></span></td></tr></tbody></table></td><td style="padding: 0px; color: #002c5a;"><a href="mailto:' + sanitizeText(email) + '" color="#002c5a" class="sc-gipzik iyhjGb" style="text-decoration: none; color: #002c5a; font-size: 12px;"><span>' + sanitizeText(email) + '</span></a></td></tr>';
+
+            var contactDetails = document.getElementById("contact_details");
+
+            if (email.length > 0) {
+                contactDetails.insertAdjacentHTML("afterbegin", trEmail);
+            }
+
+            if (mobile.length > 0) {
+                contactDetails.insertAdjacentHTML("afterbegin", trMobile);
+            }
+        });
+
+        document.getElementById('copySignature').addEventListener('click', function() {
+            var formElement = document.getElementById('form');
+            var range = document.createRange();
+            range.selectNodeContents(formElement);
+
+            var selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            selection.removeAllRanges();
+
+            var copyMessage = document.getElementById('copyMessage');
+            copyMessage.style.display = 'block';
+        });
+    </script>
+</body>
+
+</html>
