@@ -14,6 +14,7 @@
         .eyebrow { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #bab6d9; }
         #mainarea { display: grid; grid-template-columns: minmax(280px, 390px) minmax(0, 1fr); gap: 24px; align-items: start; }
         #generator, #form-area { border: 1px solid #ffffff24; border-radius: 18px; padding: 28px; background: #101429d9; }
+        #form-area { position: sticky; top: 28px; max-height: calc(100dvh - 56px); overflow-y: auto; }
         h2 { margin: 0 0 8px; font-size: 21px; font-weight: 500; }
         .hint { color: #b6b5ca; font-size: 14px; line-height: 1.6; margin: 0 0 24px; }
         .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -41,7 +42,7 @@
         .instructions { border-top: 1px solid #ffffff20; margin-top: 24px; padding-top: 20px; }
         .instructions p { margin: 8px 0 0; }
         [hidden] { display: none !important; }
-        @media (max-width: 1000px) { #mainarea { grid-template-columns: 1fr; } }
+        @media (max-width: 1000px) { #mainarea { grid-template-columns: 1fr; } #form-area { position: static; max-height: none; overflow-y: visible; } }
         @media (max-width: 600px) { main { width: calc(100% - 32px); margin: 16px auto; } #generator, #form-area { padding: 20px; } .preview-scroll { padding: 20px; } }
     </style>
 </head>
@@ -63,6 +64,9 @@
                 <div class="inputfield"><label for="i_company">Entreprise</label><input id="i_company" name="company" type="text" autocomplete="organization" placeholder="Nom de votre entreprise"></div>
                 <div class="inputfield"><label for="i_address">Adresse</label><input id="i_address" name="address" type="text" placeholder="Rue, numéro, code postal et ville"></div>
                 <div class="inputfield"><label for="i_website">Site web</label><input id="i_website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="votre-site.be" aria-describedby="websiteHint"><p class="hint" id="websiteHint" style="margin:8px 0 0">Avec ou sans https://</p></div>
+                <div class="inputfield"><label for="signatureFont">Police de la signature</label><select id="signatureFont" name="signatureFont" aria-describedby="fontHint">
+                    <option value="arial">Arial</option><option value="verdana">Verdana</option><option value="trebuchet">Trebuchet MS</option><option value="georgia">Georgia</option><option value="times">Times New Roman</option><option value="courier">Courier New</option>
+                </select><p class="hint" id="fontHint" style="margin:8px 0 0">Polices système pour Gmail et Outlook. Si la police manque sur l’appareil du destinataire, une police de remplacement est utilisée.</p></div>
                 <div class="inputfield"><label for="signatureColor">Couleur de la signature</label><input id="signatureColor" name="signatureColor" type="color" value="#002c5a" style="height:48px;padding:6px;cursor:pointer"></div>
                 <div class="inputfield"><label for="logoFile">Importer votre logo</label><input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="logoStatus"><p class="hint" id="logoStatus" role="status" aria-live="polite">PNG, JPG ou WebP · 5 Mo maximum. Les proportions sont conservées.</p><button id="removeLogo" type="button" hidden>Retirer le logo</button></div>
                 <button id="generate" type="submit">Générer ma signature ↗</button>
@@ -141,19 +145,52 @@
             }
         });
 
+        // Raster icons retain their size and color when the signature is copied.
+        const iconCache = new Map();
+        function contactIcon(kind, color) {
+            const key = kind + color;
+            if (iconCache.has(key)) return iconCache.get(key);
+            const paths = {
+                phone: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.79a2 2 0 0 1-.45 2.11L8.09 9.89a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.89.34 1.83.57 2.79.69A2 2 0 0 1 22 16.92Z',
+                email: 'M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z M2 6l10 7L22 6',
+                website: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z M3 12h18 M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z'
+            };
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = 48;
+            const context = canvas.getContext('2d');
+            context.scale(2, 2);
+            context.strokeStyle = color;
+            context.lineWidth = 1.8;
+            context.lineCap = context.lineJoin = 'round';
+            context.stroke(new Path2D(paths[kind]));
+            const src = canvas.toDataURL('image/png');
+            iconCache.set(key, src);
+            return src;
+        }
+
         function renderSignature() {
             document.getElementById('copyMessage').textContent = '';
             const value = name => fields.elements.namedItem(name).value.trim();
             const color = value('signatureColor');
+            const fonts = {
+                arial: 'Arial, Helvetica, sans-serif',
+                verdana: 'Verdana, Geneva, Arial, sans-serif',
+                trebuchet: '"Trebuchet MS", Arial, sans-serif',
+                georgia: 'Georgia, "Times New Roman", serif',
+                times: '"Times New Roman", Times, serif',
+                courier: '"Courier New", Courier, monospace'
+            };
+            const font = fonts[value('signatureFont')] || fonts.arial;
             const greeting = document.getElementById('greeting');
             greeting.textContent = value('greeting');
             greeting.hidden = !value('greeting');
             greeting.style.color = color;
+            greeting.style.fontFamily = font;
             const table = document.createElement('table');
             table.cellPadding = '0';
             table.cellSpacing = '0';
             table.setAttribute('role', 'presentation');
-            table.style.cssText = 'font:14px Arial,Helvetica,sans-serif;color:' + color + ';border-collapse:collapse;';
+            table.style.cssText = 'font:14px ' + font + ';color:' + color + ';border-collapse:collapse;';
             const row = table.insertRow();
             if (logo) {
                 const cell = row.insertCell();
@@ -174,7 +211,7 @@
                 if (!text) return;
                 const p = document.createElement('p');
                 p.textContent = text;
-                p.style.cssText = 'margin:0;font-size:14px;line-height:22px;color:' + color + ';' + (bold ? 'font-weight:bold;' : '');
+                p.style.cssText = 'margin:0;font-family:' + font + ';font-size:14px;line-height:22px;color:' + color + ';' + (bold ? 'font-weight:bold;' : '');
                 parent.append(p);
             }
             line(identity, name, true);
@@ -183,37 +220,50 @@
             line(identity, value('address'));
             const contacts = [];
             const mobile = value('mobile');
-            if (mobile) contacts.push({text:mobile, href:'tel:' + mobile.replace('(0)', '').replace(/[^+0-9]/g, '')});
+            if (mobile) contacts.push({kind:'phone', text:mobile, href:'tel:' + mobile.replace('(0)', '').replace(/[^+0-9]/g, '')});
             const email = value('email');
-            if (email) contacts.push({text:email, href:'mailto:' + email});
+            if (email) contacts.push({kind:'email', text:email, href:'mailto:' + email});
             const website = value('website');
             if (website) {
                 try {
                     const url = new URL(/^[a-z][a-z0-9+.-]*:/i.test(website) ? website : 'https://' + website.replace(/^\/\//, ''));
-                    if (['http:', 'https:'].includes(url.protocol)) contacts.push({text:url.host + (url.pathname === '/' ? '' : url.pathname), href:url.href});
+                    if (['http:', 'https:'].includes(url.protocol)) contacts.push({kind:'website', text:url.host + (url.pathname === '/' ? '' : url.pathname), href:url.href});
                 } catch (error) { /* Invalid URLs are excluded. */ }
             }
             if (contacts.length) {
                 const contactCell = row.insertCell();
                 contactCell.style.cssText = 'vertical-align:middle;padding-left:20px;' + (identity.childNodes.length ? 'border-left:1px solid ' + color + ';' : '');
                 if (identity.childNodes.length) identity.style.paddingRight = '20px';
+                const contactTable = document.createElement('table');
+                contactTable.cellPadding = '0';
+                contactTable.cellSpacing = '0';
+                contactTable.setAttribute('role', 'presentation');
                 contacts.forEach(contact => {
-                    const p = document.createElement('p');
-                    p.style.cssText = 'margin:0;line-height:25px;';
+                    const contactRow = contactTable.insertRow();
+                    const iconCell = contactRow.insertCell();
+                    iconCell.style.cssText = 'vertical-align:middle;padding:0 10px 0 0;width:24px;';
+                    const icon = document.createElement('img');
+                    icon.src = contactIcon(contact.kind, color);
+                    icon.alt = '';
+                    icon.width = icon.height = 14;
+                    icon.style.cssText = 'display:block;border:0;width:14px;height:14px;';
+                    iconCell.append(icon);
+                    const p = contactRow.insertCell();
+                    p.style.cssText = 'padding:0;vertical-align:middle;height:25px;line-height:25px;';
                     const a = document.createElement('a');
                     a.href = contact.href;
                     a.textContent = contact.text;
-                    a.style.cssText = 'font:12px Arial,Helvetica,sans-serif;color:' + color + ';text-decoration:none;';
+                    a.style.cssText = 'font:12px ' + font + ';color:' + color + ';text-decoration:none;';
                     p.append(a);
-                    contactCell.append(p);
                 });
+                contactCell.append(contactTable);
             }
             if (!identity.childNodes.length) identity.remove();
             const content = document.getElementById('signatureContent');
             content.replaceChildren(table);
             if (!name && !value('function') && !value('company') && !value('address') && !contacts.length && !logo) {
                 content.textContent = 'Votre signature apparaîtra ici. Renseignez vos informations pour commencer.';
-                content.style.cssText = 'font:14px Arial,sans-serif;color:#64748b;line-height:22px;';
+                content.style.cssText = 'font:14px ' + font + ';color:#64748b;line-height:22px;';
             } else content.removeAttribute('style');
         }
         fields.addEventListener('submit', function(event) {
@@ -223,6 +273,7 @@
         fields.addEventListener('input', function(event) {
             if (event.target !== logoFile) renderSignature();
         });
+        document.getElementById('signatureFont').addEventListener('change', renderSignature);
         renderSignature();
 
         document.getElementById('copySignature').addEventListener('click', async function() {
